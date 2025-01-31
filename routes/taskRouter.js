@@ -35,10 +35,10 @@ taskRouter.post("/delete", async (req, res) => {
 
 taskRouter.post("/edit", async (req, res) => {
   try {
-    const { _id, task } = req.body;
+    const { _id, task, completed } = req.body;
     const editedTask = await Todo.findByIdAndUpdate(
       _id,
-      { task: task },
+      { task: task , completed: completed},
       { new: true }
     );
     res.send(editedTask);
