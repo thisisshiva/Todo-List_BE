@@ -33,15 +33,22 @@ taskRouter.post("/delete", async (req, res) => {
   }
 });
 
-taskRouter.post("/edit", async(req,res)=>{
-    try{
-        const editId = req.body._id
-        const editedTask = await Todo.findByIdAndUpdate({_id: editId})
-        res.send(editedTask)
-    }catch(err){
-        res.status(401).json("ERROR"+err)
-    }
+taskRouter.post("/edit", async (req, res) => {
+  try {
+    const { _id, task } = req.body;
+    const editedTask = await Todo.findByIdAndUpdate(
+      _id,
+      { task: task },
+      { new: true }
+    );
+    res.send(editedTask);
 
-})
+    if (!editedTask) {
+      return res.status(404).json({ message: "task not found" });
+    }
+  } catch (err) {
+    res.status(401).json("ERROR" + err);
+  }
+});
 
 module.exports = taskRouter;
